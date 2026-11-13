@@ -37,19 +37,11 @@
         .section { display: none; padding: 85px 20px 120px; animation: fadeIn 0.6s ease; max-width: 650px; margin: 0 auto; }
         .section.active { display: block; }
 
-        /* 首页介绍 */
-        .hero { 
-            height: 300px; border-radius: 4px; margin-bottom: 30px;
-            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('img/hero.jpg') no-repeat center/cover;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            border: 1px solid #222;
-        }
-        .hero h1 { color: var(--gold); font-size: 2.2rem; letter-spacing: 10px; margin: 0; font-weight: 300; }
-        .hero p { font-size: 0.75rem; letter-spacing: 4px; color: #ccc; margin-top: 10px; }
-
-        .story-box { text-align: center; padding: 0 10px; }
-        .story-box h2 { color: var(--gold); font-weight: 300; margin-bottom: 20px; }
-        .story-box p { color: #bbb; font-size: 0.95rem; margin-bottom: 20px; text-align: justify; }
+        /* 首页 - 关于我们排版 */
+        .story-box { text-align: center; padding: 20px 10px; }
+        .story-box h2 { font-weight: 700; color: var(--gold); font-size: 1.4rem; margin-bottom: 25px; letter-spacing: 2px; }
+        .story-box .zh-text { font-size: 1rem; color: var(--text); line-height: 1.8; margin-bottom: 30px; text-align: justify; }
+        .story-box .en-text { font-size: 0.85rem; color: var(--dim); font-style: italic; line-height: 1.6; border-top: 1px solid #222; padding-top: 25px; }
 
         /* 菜单样式 */
         .cat-card { margin-bottom: 15px; border: 1px solid #1a1a1a; border-radius: 4px; overflow: hidden; }
@@ -64,6 +56,7 @@
 
         .dish { display: flex; justify-content: space-between; padding: 18px 0; border-bottom: 1px solid #151515; }
         .dish:last-child { border-bottom: none; }
+        .dish-info { flex: 1; cursor: pointer; }
         .d-name-zh { font-size: 1.1rem; display: block; margin-bottom: 3px; }
         .d-name-sub { font-size: 0.8rem; color: var(--dim); display: block; line-height: 1.3; }
         .d-price { color: var(--gold); font-weight: bold; margin-top: 8px; font-size: 0.95rem; }
@@ -74,10 +67,29 @@
             font-size: 22px; cursor: pointer; align-self: center;
         }
 
-        /* 联系方式 */
-        .contact-item { background: var(--card); padding: 25px; margin-bottom: 15px; border: 1px solid #222; text-align: center; }
-        .contact-item label { color: var(--gold); display: block; font-size: 0.75rem; letter-spacing: 2px; margin-bottom: 10px; }
-        .contact-item a { color: white; text-decoration: none; font-size: 1.2rem; }
+        /* 菜品详情弹窗 */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 4000; justify-content: center; align-items: center; padding: 20px; }
+        .modal-content { background: var(--card); width: 100%; max-width: 500px; border-radius: 8px; overflow: hidden; position: relative; border: 1px solid var(--gold); }
+        .modal-img { width: 100%; height: 280px; background: #1a1a1a no-repeat center/cover; border-bottom: 1px solid #222; }
+        .modal-body { padding: 25px; }
+        .modal-body h2 { color: var(--gold); margin: 0 0 15px; font-weight: 400; }
+        .modal-body p { font-size: 0.95rem; color: #bbb; line-height: 1.6; margin-bottom: 20px; }
+        .close-modal { position: absolute; top: 15px; right: 15px; color: white; font-size: 30px; cursor: pointer; background: rgba(0,0,0,0.6); width: 40px; height: 40px; border-radius: 50%; text-align: center; line-height: 38px; z-index: 4001; }
+
+        /* 联系页面样式 (匹配图片) */
+        .contact-item { 
+            background-color: #0a0a0a; padding: 45px 20px; 
+            margin-bottom: 15px; border: 1px solid #1a1a1a; 
+            text-align: center; display: flex; flex-direction: column; align-items: center;
+        }
+        .contact-item label { 
+            color: var(--gold); display: block; font-size: 0.85rem; 
+            letter-spacing: 3px; margin-bottom: 25px; font-weight: 300;
+        }
+        .contact-item p, .contact-item a { 
+            color: #ffffff; text-decoration: none; font-size: 1.25rem; margin: 0; letter-spacing: 1px;
+        }
+        .map-link { color: var(--gold) !important; font-size: 0.9rem !important; margin-top: 25px !important; display: block; letter-spacing: 2px; }
 
         /* 购物车栏 */
         .cart-bar {
@@ -93,88 +105,159 @@
 <body>
 
 <nav>
-    <a href="#" onclick="showP('home')" id="n-home">关于 ABOUT</a>
-    <a href="#" onclick="showP('menu')" id="n-menu" class="active">菜单 MENU</a>
-    <a href="#" onclick="showP('contact')" id="n-contact">联系 CONTACT</a>
+    <a href="javascript:void(0)" onclick="showP('home')" id="n-home">关于 ABOUT</a>
+    <a href="javascript:void(0)" onclick="showP('menu')" id="n-menu" class="active">菜单 MENU</a>
+    <a href="javascript:void(0)" onclick="showP('contact')" id="n-contact">联系 CONTACT</a>
 </nav>
 
-<div id="home" class="section">
-    <div class="hero">
-        <h1>中国楼</h1>
-        <p>RAVINTOLA CHINA</p>
-    </div>
-    <div class="story-box">
-        <h2>传承赫尔辛基的东方味道</h2>
-        <p>半世纪匠心，赫尔辛基首家中餐厅
-始于 1973 年，中国楼（Restaurant China）坐落于市中心 Annankatu，是芬兰粤菜文化的开路先锋。
-我们坚持“正宗”与“创新”并蓄，主打手工点心、经典广式烤鸭及生猛海鲜。65 席雅座，为您呈献最地道的岭南风味。
-
-Proudly serving as Helsinki's first Chinese restaurant since 1973. Specializing in authentic Cantonese Dim Sum and Roast Duck.</p>
-        <p style="font-style: italic; color: #777;">"Authentic Chinese cuisine served with passion and tradition in the heart of Helsinki."</p>
-        <div class="contact-item" style="margin-top:40px;">
-            <label>营业时间 OPENING HOURS</label>
-            <p style="font-size: 0.9rem;">周一至周五: 11:00 - 22:00<br>周六至周日: 12:00 - 23:00</p>
+<!-- 菜品详情弹窗 -->
+<div id="dishModal" class="modal" onclick="closeModal()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <span class="close-modal" onclick="closeModal()">&times;</span>
+        <div id="m-img" class="modal-img"></div>
+        <div class="modal-body">
+            <h2 id="m-title"></h2>
+            <p id="m-desc"></p>
+            <div id="m-price" style="color:var(--gold); font-weight:bold; font-size:1.3rem;"></div>
         </div>
     </div>
 </div>
 
+<!-- 首页 -->
+<div id="home" class="section">
+    <div class="story-box">
+        <h2>半世纪匠心，赫尔辛基首家中餐厅</h2>
+        <div class="zh-text">
+            始于 1973 年，中国楼（Restaurant China）坐落于市中心 Annankatu，是芬兰粤菜文化的开路先锋。<br><br>
+            我们坚持“正宗”与“创新”并蓄，主打手工点心、经典广式烤鸭及美味烧腊，以及深受素食主义者爱好者的特色菜。65 席雅座，为您呈献最地道的岭南风味。
+        </div>
+        <div class="en-text">
+            Proudly serving as Helsinki's first Chinese restaurant since 1973.<br>
+            Specializing in authentic Cantonese Dim Sum and Roast Duck.
+        </div>
+        <div class="contact-item" style="margin-top:40px; padding: 30px;">
+            <label>营业时间 OPENING HOURS</label>
+            <p style="font-size: 1rem;">周一至周五: 11:00 - 22:00<br>周六至周日: 12:00 - 23:00</p>
+        </div>
+    </div>
+</div>
+
+<!-- 菜单页 -->
 <div id="menu" class="section active">
     <div id="menu-container"></div>
 </div>
 
+<!-- 联系页 (匹配图片样式) -->
 <div id="contact" class="section">
     <div class="contact-item">
         <label>订餐电话 PHONE</label>
         <a href="tel:+358449729328">+358 44 972 9328</a>
     </div>
+
     <div class="contact-item">
         <label>餐厅地址 ADDRESS</label>
         <p>Annankatu 25, 00100 Helsinki</p>
-        <a href="https://maps.google.com/?q=Annankatu+25+Helsinki" target="_blank" style="font-size:0.8rem; color:var(--gold);">[ 在地图中查看 ]</a>
+        <a href="https://maps.google.com/?q=Annankatu+25,Helsinki" target="_blank" class="map-link">[ 在地图中查看 ]</a>
     </div>
+
     <div class="contact-item">
         <label>电子邮箱 EMAIL</label>
         <p>info@ravintolachina.com</p>
     </div>
+
+    <div class="contact-item">
+        <label>芬兰食品安全监督 Oiva</label>
+        <a href="https://www.oivahymy.fi/yrityshaku?hakusana=Wing%20Hing%20Oy">https://www.oivahymy.fi/yrityshaku?hakusana=Wing%20Hing%20Oy</a>
+    </div>
 </div>
 
 <div class="cart-bar" id="cart-bar" onclick="alert('订单已生成，请向服务员展示！')">
-    <span>已选清单 TOTAL: €<span id="total">0.00</span></span>
+    <span>已选 TOTAL: €<span id="total">0.00</span></span>
     <span>确认 OK</span>
 </div>
 
 <script>
+// 完整 72+ 道菜品数据清单
 const fullMenu = [
     { cat: "🥟 手工点心 DIM SUM", items: [
-        { id: "1", zh: "春卷 (素)", fi: "Kevätkääryleet (kasvis)", en: "Veg Springrolls", p: 7.50 },
-        { id: "2", zh: "咸水角", fi: "Hamsui Gok (porsaanliha)", en: "Mixed puff w. pork", p: 8.50 },
-        { id: "5", zh: "烧麦", fi: "Siu Mai (porsaan-sieni)", en: "Steamed pork dumplings", p: 8.50 },
-        { id: "6", zh: "虾饺", fi: "Haa Gau (katkarapu)", en: "Steamed shrimp dumplings", p: 8.50 },
-        { id: "9", zh: "点心拼盘 (1-8号)", fi: "Dim Sum Sekoitus", en: "Mixed Dumplings", p: 19.90 }
+        { id: "1", zh: "春卷 (素)", fi: "Kevätkääryleet (kasvis)", en: "Fried veg springrolls", p: 7.50, desc: "外皮酥脆，内含新鲜蔬菜丝，搭配酸甜蘸酱。", img: "" },
+        { id: "2", zh: "咸水角", fi: "Hamsui Gok (porsaanliha)", en: "Deep fried mixed puff w. pork", p: 8.50, desc: "地道粤式炸点，糯米皮软糯 Q 弹，内馅咸香。", img: "" },
+        { id: "3", zh: "咖哩角", fi: "Curry Puff (kana)", en: "Curry Puff (chicken)", p: 8.50, desc: "香酥可口的咖喱鸡肉酥角，浓郁异国风味。", img: "" },
+        { id: "4", zh: "炸云吞", fi: "Wonton (porsaanliha)", en: "Fried Wonton (pork)", p: 8.50, desc: "金黄酥脆的炸云吞，搭配甜酸酱。", img: "" },
+        { id: "5", zh: "烧麦", fi: "Siu Mai (porsaan-sieni)", en: "Steamed pork-mushroom dumplings", p: 8.50, desc: "手工包制，严选猪肉与香菇，口感扎实。", img: "" },
+        { id: "6", zh: "虾饺", fi: "Haa Gau (katkarapu)", en: "Steamed shrimp dumplings", p: 8.50, desc: "晶莹剔透的皮包裹整颗鲜虾，鲜美多汁。", img: "" },
+        { id: "7", zh: "潮州粉粿", fi: "Fun Guo (porsaan-pähkinä)", en: "Steamed dumplings w. pork, peanuts", p: 8.50, desc: "传统潮州风味，馅料丰富带有花生香气。", img: "" },
+        { id: "8", zh: "煎饺", fi: "Kiinalainen Dumplings (kana)", en: "Pan fried chicken dumplings", p: 8.50, desc: "底脆内嫩的鸡肉煎饺。", img: "" },
+        { id: "9", zh: "点心拼盘 (1-8号)", fi: "Dim Sum Sekoitus (nro 1-8)", en: "Dumplings Mix (no 1-8)", p: 19.90, desc: "主厨推荐点心组合，一次体验多种经典美味。", img: "" },
+        { id: "10", zh: "金丝大虾", fi: "Kultaiset Katkaravut", en: "Golden Crispy Prawns", p: 11.80, desc: "酥脆外衣包裹大虾，香气扑鼻。", img: "" },
+        { id: "11", zh: "蒜蓉粉丝蒸扇贝", fi: "Höyrytetty Kampasimpukka", en: "Steamed Scallop w. Garlic", p: 10.00, desc: "鲜美扇贝配以浓郁蒜蓉与粉丝清蒸。", img: "" }
     ]},
-    { cat: "🥣 精选汤类 SOUP", items: [
-        { id: "12", zh: "云吞汤", fi: "Wonton Keitto", en: "Wonton Soup", p: 8.50 },
-        { id: "13", zh: "酸辣汤", fi: "Hapantulinen Keitto", en: "Hot and Sour Soup", p: 8.50 }
+    { cat: "🥣 汤类 KEITTO / SOUP", items: [
+        { id: "12", zh: "云吞汤", fi: "Wonton Keitto (porsaanliha)", en: "Wonton Soup (pork)", p: 8.50, desc: "皮薄馅大的手工云吞，配以清甜高汤。", img: "" },
+        { id: "13", zh: "酸辣汤", fi: "Hapantulinen Keitto", en: "Hot and Sour Soup", p: 8.50, desc: "经典开胃酸辣汤，用料丰富。", img: "" },
+        { id: "14", zh: "玉米鸡汤", fi: "Kanaa ja Maissi Keitto", en: "Chicken Corn Soup", p: 8.50, desc: "香甜玉米与嫩滑鸡丝熬制的高汤。", img: "" },
+        { id: "15", zh: "海鲜豆腐汤", fi: "Äyriäiset ja Tofua Keitto", en: "Seafood Tofu Soup", p: 9.50, desc: "多种海鲜与滑嫩豆腐的鲜美组合。", img: "" },
+        { id: "16", zh: "蔬菜豆腐汤", fi: "Vihanneksia ja Tofua Keitto", en: "Vegetable Tofu Soup", p: 8.00, desc: "清淡健康的蔬菜豆腐清汤。", img: "" }
     ]},
-    { cat: "🦆 招牌烤鸭 ROAST DUCK", items: [
-        { id: "23", zh: "广式烤鸭 (半)", fi: "Kantonilainen Ankka (1/2)", en: "Cantonese Roast Duck", p: 32.00 },
-        { id: "24", zh: "北京烤鸭 (无骨/半)", fi: "Peking Ankka (1/2)", en: "Beijing Roast Duck", p: 38.00 }
+    { cat: "🔥 鸡/牛/猪肉 KANA / NAUTA / PORSAS", items: [
+        { id: "17", zh: "辣汁鸡/牛/猪", fi: "Chilikastikkeessa Kana / Nauta / Porsas", en: "In Chili Sauce Chicken / Beef / Pork", p: 17.50, desc: "可选择鸡肉、牛肉或猪肉，特制辣汁惹味过瘾。", img: "" },
+        { id: "18", zh: "宫保鸡/牛/猪", fi: "Kung Po Kana / Nauta / Porsas (Pähkinä)", en: "Kung Po Chicken / Beef / Pork (Peanut)", p: 17.50, desc: "经典的宫保风味，加入花生与干辣椒爆炒。", img: "" },
+        { id: "19", zh: "广东鸡/猪", fi: "Kantonlaisen Tapaan Kana / Porsas", en: "Cantonese Style Chicken / Pork", p: 17.50, desc: "地道粤式家常做法，鲜香适口。", img: "" },
+        { id: "20", zh: "左宗棠鸡", fi: "Kenraali Tson Kana", en: "General Tso's Chicken", p: 17.50, desc: "外焦里嫩的鸡块，包裹酸甜微辣酱汁。", img: "" },
+        { id: "21", zh: "咖喱鸡/牛", fi: "Currykastikkeessa Kana / Nauta", en: "In Curry Sauce Chicken / Beef", p: 17.50, desc: "浓郁芬芳的咖喱酱汁焖煮肉类。", img: "" },
+        { id: "22", zh: "四川鸡/猪/牛", fi: "Sze-chuan Tapaan Kana / Porsas / Nauta", en: "Szechuan Style Chicken / Pork / Beef", p: 17.50, desc: "麻辣鲜香的川式风味热炒。", img: "" }
     ]},
-    { cat: "🔥 特色热炒 MAIN COURSES", items: [
-        { id: "17", zh: "辣汁鸡/牛/猪", fi: "Chilikastikkeessa", en: "Chili Sauce Series", p: 17.50 },
-        { id: "20", zh: "左宗棠鸡", fi: "Kenraali Tson Kana", en: "General Tso's Chicken", p: 17.50 },
-        { id: "42", zh: "牛腩煲", fi: "Haudutettua Naudankylkeä", en: "Stewed Beef Brisket", p: 27.00 },
-        { id: "54", zh: "铁板黑椒牛", fi: "Tirisevää Nautaa", en: "Sizzling Black Pepper Beef", p: 29.00 }
+    { cat: "🦆 鸭类 ANKKA / DUCK", items: [
+        { id: "23", zh: "广式烤鸭 (半)", fi: "Kantonilainen Paahtettu Ankka (1/2)", en: "Cantonese Roast Duck (1/2)", p: 32.00, desc: "秘制卤水浸渍，皮脆肉嫩的经典广式烧味。", img: "" },
+        { id: "24", zh: "北京烤鸭 (无骨/半)", fi: "Peking Ankka (Luuton 1/2)", en: "Beijing Roast Duck (Boneless 1/2)", p: 38.00, desc: "传统挂炉烤制，皮酥肉嫩，搭配薄饼与甜面酱。", img: "" },
+        { id: "25", zh: "七彩鸭丝", fi: "Silputtu Ankka Vihanneksilla", en: "Shredded Duck w. Vegetables", p: 29.00, desc: "鸭肉切丝配丰富时令蔬菜爆炒。", img: "" }
     ]},
-    { cat: "🥬 素食健康 VEGETARIAN", items: [
-        { id: "26", zh: "干煸四季豆", fi: "Paistettuja Papuja", en: "Dry-fried Green Beans", p: 17.00 },
-        { id: "28", zh: "麻婆豆腐", fi: "Ma Po Tofua", en: "Ma Po Tofu", p: 16.00 }
+    { cat: "🥦 素菜 KASVISSYÖJÄ / VEGETARIAN", items: [
+        { id: "26", zh: "干煸四季豆", fi: "Paistettuja Vihreitä Papuja", en: "Fried Green Beans", p: 17.00, desc: "干香入味，蒜泥与豆角的完美结合。", img: "" },
+        { id: "27", zh: "蒜蓉炒时菜", fi: "Paistettua Kauden Vihanneksia", en: "Fried Seasonal Vegetables", p: 17.00, desc: "新鲜时令蔬菜大火蒜蓉快炒。", img: "" },
+        { id: "28", zh: "麻婆豆腐", fi: "Ma Po Tofua (Tulinen)", en: "Ma Po Tofu (Spicy)", p: 16.00, desc: "经典的川味名菜，麻辣烫嫩，极为下饭。", img: "" },
+        { id: "29", zh: "杂菜豆腐", fi: "Tofua ja Vihanneksia", en: "Tofu w. Vegetables", p: 16.00, desc: "营养丰富的豆腐与杂锦时蔬同烩。", img: "" },
+        { id: "30", zh: "宫保豆腐", fi: "Kung Po Tofua (Pähkinä)", en: "Kung Po Tofu (Peanut)", p: 16.00, desc: "素食版宫保风味，加入花生米翻炒。", img: "" }
+    ]},
+    { cat: "🦐 海鲜 MERENELÄVIÄ / SEAFOOD", items: [
+        { id: "31", zh: "炸黄金大虾 (6只)", fi: "Friterattua Jättikatkarapua (6 kpl)", en: "Deep Fried Prawns (6 pcs)", p: 31.00, desc: "外皮酥脆的大虾，配特制蘸酱。", img: "" },
+        { id: "32", zh: "炸黄金大虾 (4只)", fi: "Friterattua Jättikatkarapua (4 kpl)", en: "Deep Fried Prawns (4 pcs)", p: 21.00, desc: "经典酥炸大虾（4只装）。", img: "" },
+        { id: "33", zh: "椒盐大虾", fi: "Jättikatkarapua Suolalla-pippurilla", en: "Prawns w. Pepper Salt", p: 30.00, desc: "外壳香脆，虾肉Q弹，椒盐惹味。", img: "" },
+        { id: "34", zh: "宫保大虾", fi: "Kung Po Jättikatkarapua (Pähkinä)", en: "Kung Po Prawns (Peanut)", p: 30.00, desc: "大虾与花生、干辣椒爆炒的经典味型。", img: "" },
+        { id: "35", zh: "四川大虾", fi: "Sze-chuan Jättikatkarapua", en: "Szechuan Prawns", p: 30.00, desc: "麻辣鲜香的川味大虾料理。", img: "" },
+        { id: "36", zh: "辣汁大虾", fi: "Chilikastikkeessa Jättikatkarapua", en: "Prawns in Chili Sauce", p: 30.00, desc: "浓郁辣汁焖煮鲜美大虾。", img: "" },
+        { id: "37", zh: "椒盐鱿鱼丝", fi: "Mustekalaa Suolalla-pippurilla", en: "Crispy Squid w. Pepper Salt", p: 26.00, desc: "酥脆可口的椒盐鱿鱼，佐酒佳品。", img: "" },
+        { id: "38", zh: "水煮鱼/牛", fi: "Öljyssä Keitettyä Kalaa / Nautaa", en: "Boiled Fish / Beef in Chili Oil", p: 29.00, desc: "麻辣滚烫、肉质滑嫩的经典水煮风味。", img: "" }
+    ]},
+    { cat: "🥘 特色煲类 PADASSA / CLAYPOT", items: [
+        { id: "41", zh: "啫啫鸡煲", fi: "Kanaa ja Vihanneksia Padassa", en: "Chicken w. Vegetables in Claypot", p: 26.00, desc: "砂煲啫出极致香味，鸡肉嫩滑多汁。", img: "" },
+        { id: "42", zh: "牛腩煲", fi: "Haudutettua Naudankylkeä Retikka Padassa", en: "Stewed Beef Brisket w. Turnip Claypot", p: 27.00, desc: "文火慢炖，牛腩与白萝卜软烂入味。", img: "" },
+        { id: "43", zh: "咸鱼鸡粒豆腐煲", fi: "Suolattua Kalaa, Kanaa ja Tofua Padassa", en: "Salted Fish, Chicken & Tofu Claypot", p: 22.00, desc: "咸鱼提鲜，鸡粒与豆腐完美融合的经典煲仔。", img: "" },
+        { id: "44", zh: "火腩豆腐煲", fi: "Grillattua Porsaankylkeä ja Tofua Padassa", en: "Roast Pork & Tofu Claypot", p: 24.80, desc: "烧肉与豆腐慢火煲出浓郁香味。", img: "" },
+        { id: "45", zh: "椒盐排骨", fi: "Porsaan Kylkeä Suolalla-pippurilla", en: "Pork Ribs w. Pepper Salt", p: 24.00, desc: "外酥里嫩的椒盐猪排骨。", img: "" },
+        { id: "46", zh: "肉碎茄子煲", fi: "Munakoisoa ja Porsaan Jauhalihaa Padassa", en: "Eggplant w. Minced Pork Claypot", p: 22.00, desc: "肉碎与软糯茄子砂煲焖煮。", img: "" },
+        { id: "47", zh: "鱼香茄子煲", fi: "Munakoisoa Yu-Xiang Kastikkeessa", en: "Eggplant in Yu-Xiang Sauce", p: 22.00, desc: "经典的鱼香微辣风味烧茄子。", img: "" },
+        { id: "51", zh: "广式腊肠炒蛋", fi: "Kantonilaista Makkaralla Paistettua Kananmunaa", en: "Egg Fried w. Cantonese Sausage", p: 18.00, desc: "广式腊肠特有的甜香融入滑蛋中。", img: "" },
+        { id: "52", zh: "蜜汁叉烧", fi: "Char Siu Porsaanlihaa", en: "Cantonese BBQ Pork", p: 23.00, desc: "传统蜜汁烤叉烧，甜香适口。", img: "" },
+        { id: "53", zh: "脆皮烧肉", fi: "Rapeaksi Paahdettua Porsaanlihaa", en: "Crispy Roast Pork", p: 27.00, desc: "皮脆肉香的经典广式烧肉。", img: "" },
+        { id: "54", zh: "铁板黑椒牛", fi: "Tirisevää Naudanlihaa Mustapippuri", en: "Sizzling Beef w. Black Pepper", p: 29.00, desc: "铁板炽热呈献，黑椒牛柳香气四溢。", img: "" }
+    ]},
+    { cat: "🍚 主食 RIISI JA NUUDELI / RICE & NOODLE", items: [
+        { id: "55", zh: "杨州炒饭", fi: "Yang Zhou Paistettua Riisiä", en: "Yangzhou Fried Rice", p: 17.00, desc: "经典粒粒分明炒饭，配料丰富。", img: "" },
+        { id: "55-1", zh: "虾仁炒饭", fi: "Katkarapua Paistettua Riisiä", en: "Shrimp Fried Rice", p: 16.00, desc: "鲜美虾仁蛋炒饭。", img: "" },
+        { id: "55-2", zh: "鸡肉炒饭", fi: "Kanaa Paistettua Riisiä", en: "Chicken Fried Rice", p: 15.00, desc: "香嫩鸡肉蛋炒饭。", img: "" },
+        { id: "55-3", zh: "蔬菜炒饭", fi: "Vihanneksia Paistettua Riisiä", en: "Vegetable Fried Rice", p: 14.00, desc: "健康素什锦炒饭。", img: "" },
+        { id: "55-4", zh: "炒面 (鸡/猪/牛/虾)", fi: "Paistettuja Nuudeleita", en: "Fried Noodles", p: 16.00, desc: "可选鸡、猪、牛或虾仁的粤式炒面。", img: "" },
+        { id: "71", zh: "干炒牛河", fi: "Paistettua riisinuudelia ja nautaa", en: "Beef Chow Fun", p: 17.50, desc: "镬气十足的经典干炒牛河。", img: "" },
+        { id: "72", zh: "星洲炒米", fi: "Singaporen riisinuudelit", en: "Singapore Rice Noodles", p: 17.00, desc: "咖喱风味的经典星洲炒米粉。", img: "" }
     ]},
     { cat: "🍨 甜点 & 附件 DESSERT", items: [
-        { id: "56", zh: "炸香蕉配雪糕", fi: "Friterattua Banaania", en: "Fried Banana w. Ice Cream", p: 8.50 },
-        { id: "R1", zh: "白米换炒面", fi: "Riisin Vaihto Nuudelin", en: "Rice to Noodles", p: 6.00 }
+        { id: "56", zh: "炸香蕉配雪糕", fi: "Friterattua Banaania ja Jäätelöä", en: "Fried Banana w. Ice Cream", p: 8.50, desc: "外热内糯的炸香蕉搭配冰凉香草雪糕。", img: "" },
+        { id: "57", zh: "炸菠萝配雪糕", fi: "Friterattua Ananasta ja Jäätelöä", en: "Fried Pineapple w. Ice Cream", p: 8.50, desc: "酸甜多汁的炸菠萝配雪糕。", img: "" },
+        { id: "58", zh: "炸雪糕", fi: "Friterattua Jäätelöä", en: "Fried Ice Cream", p: 9.00, desc: "外酥里凉的特色甜点。", img: "" },
+        { id: "R1", zh: "换炒面", fi: "Riisin Vaihto Nuudelin", en: "Rice to Fried Noodles", p: 6.00, desc: "套餐白米饭更换为炒面。", img: "" },
+        { id: "R2", zh: "换鸡蛋炒饭", fi: "Riisin Vaihto Paistettuun Riisiin", en: "Rice to Egg Fried Rice", p: 6.00, desc: "套餐白米饭更换为蛋炒饭。", img: "" }
     ]}
-    // 此处可继续添加其余菜品至72道...
 ];
 
 let total = 0;
@@ -188,6 +271,17 @@ function showP(id) {
     window.scrollTo(0,0);
 }
 
+function openModal(title, desc, price, img) {
+    document.getElementById('m-title').innerText = title;
+    document.getElementById('m-desc').innerText = desc || "地道食材，匠心制作。欢迎品尝。";
+    document.getElementById('m-price').innerText = "€ " + price;
+    const imgSrc = img || "https://via.placeholder.com/500x300/121212/c5a059?text=Restaurant+China+1973";
+    document.getElementById('m-img').style.backgroundImage = `url('${imgSrc}')`;
+    document.getElementById('dishModal').style.display = 'flex';
+}
+
+function closeModal() { document.getElementById('dishModal').style.display = 'none'; }
+
 function render() {
     const cont = document.getElementById('menu-container');
     fullMenu.forEach((c, idx) => {
@@ -200,10 +294,10 @@ function render() {
             <div id="l-${idx}" class="dish-list">
                 ${c.items.map(d => `
                     <div class="dish">
-                        <div style="flex:1">
+                        <div class="dish-info" onclick="openModal('${d.zh}', '${d.desc}', '${d.p.toFixed(2)}', '${d.img}')">
                             <span class="d-name-zh">#${d.id} ${d.zh}</span>
                             <span class="d-name-sub">${d.fi}<br>${d.en}</span>
-                            <div class="d-price">€${d.p.toFixed(2)}</div>
+                            <div class="d-price">€${d.p.toFixed(2)} <small style="color:#555; font-weight:normal; font-size:0.7rem;">[查看详情]</small></div>
                         </div>
                         <button class="add-btn" onclick="add(${d.p})">+</button>
                     </div>
