@@ -129,7 +129,7 @@
         <h2>半世纪匠心，赫尔辛基首家中餐厅</h2>
         <div class="zh-text">
             始于 1973 年，中国楼（Restaurant China）坐落于市中心 Annankatu，是芬兰粤菜文化的开路先锋。<br><br>
-            我们坚持“正宗”与“创新”并蓄，主打手工点心、经典广式烤鸭及美味烧腊，以及深受素食主义者爱好者的特色菜。65 席雅座，为您呈献最地道的岭南风味。
+            我们坚持“正宗”与“创新”并蓄，主打手工点心、经典广式烤鸭及生猛海鲜。65 席雅座，为您呈献最地道的岭南风味。
         </div>
         <div class="en-text">
             Proudly serving as Helsinki's first Chinese restaurant since 1973.<br>
@@ -165,7 +165,7 @@
         <p>info@ravintolachina.com</p>
     </div>
 
-    <div class="contact-item">
+     <div class="contact-item">
         <label>芬兰食品安全监督 Oiva</label>
         <a href="https://www.oivahymy.fi/yrityshaku?hakusana=Wing%20Hing%20Oy">https://www.oivahymy.fi/yrityshaku?hakusana=Wing%20Hing%20Oy</a>
     </div>
@@ -177,6 +177,23 @@
 </div>
 
 <script>
+// ----------------- 安全保护脚本 (防止轻易查看源码和右键) -----------------
+document.addEventListener('contextmenu', function(e) {
+    e.preventDefault(); // 禁用右键菜单
+});
+
+document.addEventListener('keydown', function(e) {
+    // 禁用 F12, Ctrl+U (查看源码), Ctrl+Shift+I / J (开发者工具)
+    if (
+        e.key === 'F12' || 
+        (e.ctrlKey && e.key === 'u') || 
+        (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j' || e.key === 'C' || e.key === 'c'))
+    ) {
+        e.preventDefault();
+    }
+});
+// ------------------------------------------------------------------------
+
 // 完整 72+ 道菜品数据清单
 const fullMenu = [
     { cat: "🥟 手工点心 DIM SUM", items: [
